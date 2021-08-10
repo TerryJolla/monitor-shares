@@ -3,10 +3,8 @@ import akshare as ak
 import requests
 import datetime
 from datetime import timedelta
-import time
 from emailsend import emailpush
 from localmode import ask_data
-
 
 
 def ask_symbol():
@@ -18,10 +16,9 @@ def ask_symbol():
         else:
             entering = False
 
-
-stock_symbol = ask_symbol()
-
-symbol = stock_symbol[2:]
+if __name__ == '__main__':
+    stock_symbol = ask_symbol()
+    symbol = stock_symbol[2:]
 
 sina_finance_url = 'http://money.finance.sina.com.cn/quotes_service/api/json_v2.php/CN_MarketData.getKLineData?symbol={}&scale=5&ma=5&datalen=2'.format(stock_symbol)
 daily_k_chart_url = 'http://image.sinajs.cn/newchart/daily/n/{}.gif'.format(stock_symbol)
@@ -47,9 +44,6 @@ live_data = ak.stock_zh_a_spot_em().query('代码 == "{}"'.format(symbol))
 
 if __name__ == '__main__':
     print(live_data)
-
-
-# 执行邮件推送
-# emailpush(addr=['1005760706@qq.com', 'jiarui.xing@outlook.com', 'wisdomterry1998@hotmail.com'], text='多收件人带附件测试', attchfile1='daily_k.jpg', attchfile2='min_k.jpg', )
-
-ask_data()
+    ask_data()
+    # 执行邮件推送
+    # emailpush(addr=['1005760706@qq.com', 'jiarui.xing@outlook.com', 'wisdomterry1998@hotmail.com'], text='多收件人带附件测试', attch_a=daily_k_chart, attch_b=min_k_chart)

@@ -1,4 +1,4 @@
-def emailpush(addr, text):  # 邮件发送模块
+def emailpush(addr, text, attch_a, attch_b):  # 邮件发送模块
     # smtplib 用于邮件的发信动作
     import smtplib
     from email.mime.text import MIMEText
@@ -31,9 +31,9 @@ def emailpush(addr, text):  # 邮件发送模块
 
         # 构造附件（附件为JPG格式的图片）
         with open('daily_k.jpg', 'wb') as code:
-            code.write(daily_k_chart.content)
+            code.write(attch_a.content)
         with open('min_k.jpg', 'wb') as code:
-            code.write(min_k_chart.content)
+            code.write(attch_b.content)
 
         attch_1 = 'daily_k.jpg'
         attch1 = MIMEApplication(open(attch_1, 'rb').read())
@@ -57,4 +57,4 @@ def emailpush(addr, text):  # 邮件发送模块
 
 if __name__ == '__main__':
     from shares import daily_k_chart, min_k_chart
-    emailpush(addr='1005760706@qq.com', text='附件发送测试')
+    emailpush(addr='1005760706@qq.com', text='附件发送测试', attch_a=daily_k_chart, attch_b=min_k_chart)
