@@ -7,6 +7,10 @@ from emailsend import emailpush
 from localmode import ask_data
 
 
+pd.set_option('display.unicode.ambiguous_as_wide', True)
+pd.set_option('display.unicode.east_asian_width', True)
+
+
 def ask_symbol():
     entering = True
     while entering:
@@ -16,7 +20,11 @@ def ask_symbol():
         else:
             entering = False
 
+
 if __name__ == '__main__':
+    stock_symbol = 'sh600089'
+    symbol = stock_symbol[2:]
+else:
     stock_symbol = ask_symbol()
     symbol = stock_symbol[2:]
 
@@ -36,7 +44,8 @@ five_days_ago = (now_time + timedelta(days=-5)).strftime('%Y%m%d')
 yesterday = (now_time + timedelta(days=-1)).strftime('%Y%m%d')
 # print('请求发送时间：{}'.format(standard_time))
 
-stock_zh_a_tick_tx_js_df = ak.stock_zh_a_tick_tx_js(code=stock_symbol)  # 获取当日每笔交易情况
+every_trades = ak.stock_zh_a_tick_tx_js(code=stock_symbol)  # 获取当日每笔交易情况
+every_trades_para = ['成交时间']
 recent_five_days_data = ak.stock_zh_a_hist(symbol=symbol, start_date=five_days_ago, end_date=yesterday, adjust='qfq')
 today_data = ak.stock_zh_a_hist(symbol=symbol, start_date=standard_date, adjust='qfq')
 live_data = ak.stock_zh_a_spot_em().query('代码 == "{}"'.format(symbol))
@@ -44,6 +53,13 @@ live_data = ak.stock_zh_a_spot_em().query('代码 == "{}"'.format(symbol))
 
 if __name__ == '__main__':
     print(live_data)
-    ask_data()
+    print('- '*15)
+    print(today_data)
+    print('-'*15)
+    print(every_trades)
+    print('-' * 15)
+    if live_data['最新价'].values > 1:
+        print('yes')
+    # print(type(live_data['最新价'].values))
     # 执行邮件推送
     # emailpush(addr=['1005760706@qq.com', 'jiarui.xing@outlook.com', 'wisdomterry1998@hotmail.com'], text='多收件人带附件测试', attch_a=daily_k_chart, attch_b=min_k_chart)
