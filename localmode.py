@@ -22,6 +22,8 @@ def ask_data():   # 本地询问模式
                 code.write(min_k_chart.content)
         elif standard_time > '15:01:00':
             print(today_data)
+        elif standard_time < '09:25:00':
+            print('尚未开盘')
     elif a == 'NO':
         print(live_data)
     else:
