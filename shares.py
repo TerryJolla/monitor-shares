@@ -54,6 +54,14 @@ recent_five_days_data = ak.stock_zh_a_hist(symbol=symbol, start_date=five_days_a
 today_data = ak.stock_zh_a_hist(symbol=symbol, start_date=standard_date, adjust='qfq')
 live_data = ak.stock_zh_a_spot_em().query('代码 == "{}"'.format(symbol))
 
+last_20_trades = every_trades.tail(20)
+sell_counts = last_20_trades['性质'].values.tolist().count('卖盘')
+neutral_counts = last_20_trades['性质'].values.tolist().count('中性盘')
+buy_counts = last_20_trades['性质'].values.tolist().count('买盘')
+
+name = last_20_trades.groupby('性质')['成交价格'].mean().index.tolist()
+mean_price = last_20_trades.groupby('性质')['成交价格'].mean().values.tolist()
+
 
 text = ''
 
@@ -69,10 +77,11 @@ if __name__ == '__main__':
     print('- '*15)
     print(today_data)
     print('-'*15)
-    print(every_trades)
+    print(last_20_trades)
     print('-' * 15)
-    if live_data['最新价'].values > 1:
-        print('yes')
-    # print(type(live_data['最新价'].values))
+    print(last_20_trades.groupby('性质')['成交价格'].mean())
+    print(last_20_trades.groupby('性质')['成交价格'].mean().index.tolist())
+    print(last_20_trades.groupby('性质')['成交价格'].mean().values.tolist())
+    print('-' * 15)
     # 执行邮件推送
     # emailpush(addr=['1005760706@qq.com', 'jiarui.xing@outlook.com', 'wisdomterry1998@hotmail.com'], text='多收件人带附件测试', attch_a=daily_k_chart, attch_b=min_k_chart)
